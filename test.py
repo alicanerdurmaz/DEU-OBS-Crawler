@@ -1,9 +1,9 @@
 import re
-import passwords
 from robobrowser import RoboBrowser
 from bs4 import BeautifulSoup
 import requests
 import time
+import passwords
 
 br = RoboBrowser()
 
@@ -20,13 +20,17 @@ for x in range(0, passwords.len):
     br.submit_form(form)
 
     temp = str(br.parsed())
+    control = 0
     firstPage = BeautifulSoup(temp, 'lxml')
     for i in firstPage.findAll("div", {"id": "DersKodu"}):
         if(i.text == "MAT1010"):
             tempLink = i.parent
             linka = str(tempLink)
+            control = 1
             break
 
+    if(control == 0):
+        continue
     finalLink = "http://www.vproce.net/OgrenciBilgiSistemi/" + linka[9:36]
 
     br.open(finalLink)
